@@ -11,7 +11,8 @@ const alphabetic_war = (string) => {
     return string
       .match(/\[\w+]/g)
       .toString()
-      .replace(/[\[\]]/g, "");
+      .replace(/[\[\]]/g, "")
+      .replace(/,/g, "");
   }
 
   let groups = [];
@@ -29,11 +30,25 @@ const alphabetic_war = (string) => {
       brCount = 0;
       i = startThis;
     }
+
+    if (i === string.length - 1) {
+      groups.push(string.substring(startThis, i + 1));
+    }
   }
 
-  console.log(groups);
-};
 
-alphabetic_war("[ab]adfd[dd]##[abe]dedf[ijk]d#d[h]#");
+  const alive = groups.reduce((tail, current) => {
+    if ((current.match(/#/g) || []).length > 1) {
+      return tail;
+    } else {
+      return (tail += current.substring(
+        current.indexOf("[") + 1,
+        current.indexOf("]")
+      ));
+    }
+  }, "");
+
+  return alive;
+};
 
 module.exports = alphabetic_war;
