@@ -6,7 +6,11 @@ const assembler = (commands) => {
     let cmd = splitCommands[i];
     switch (cmd[0]) {
       case "mov":
-        register[cmd[1]] = cmd[2];
+        if (cmd[2] in register) {
+          register[cmd[1]] = register[cmd[2]];
+        } else {
+          register[cmd[1]] = parseInt(cmd[2]);
+        }
         break;
       case "inc":
         register[cmd[1]]++;
@@ -17,10 +21,10 @@ const assembler = (commands) => {
       case "jnz":
         const vl = parseInt(cmd[2]);
         const regVal = register[cmd[1]];
-        if (regVal && vl < 0) {
+        if (regVal !== 0 && vl < 0) {
           i += vl - 1;
-        } else if (regVal && vl > 0) {
-          i++;
+        } else if (regVal !== 0 && vl > 0) {
+          i += vl - 1;
         }
         break;
     }
@@ -29,7 +33,3 @@ const assembler = (commands) => {
   }
   return register;
 };
-
-const input = ["mov a 5", "inc a", "dec a", "dec a", "jnz a -1", "inc a"];
-
-console.log(assembler(input));
