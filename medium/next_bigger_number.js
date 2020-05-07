@@ -42,13 +42,15 @@ const next_bigger_number = (number) => {
   let smallest = 9;
 
   for (let c = 1; c < right.length; c++) {
-    if (right[c] > right[0] && right[c] < smallest) {
+    if (right[c] > right[0] && right[c] <= smallest) {
       smallIdx = c;
       smallest = right[c];
     }
   }
 
   swap(0, smallIdx, right);
+
+  console.log(right, smallIdx);
 
   const sortedPart = right.slice(1).sort();
 
@@ -57,6 +59,7 @@ const next_bigger_number = (number) => {
   return parseInt(res.join(""));
 };
 
-console.log(next_bigger_number(534976));
+// console.log(next_bigger_number(32494));
+// console.log(next_bigger_number(144));
 
 module.exports = next_bigger_number;
