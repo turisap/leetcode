@@ -1,60 +1,62 @@
 const next_bigger_number = (number) => {
   const digits = number.toString().split("");
-  let inaAsc = true;
-  let possiblySorted = parseInt([...digits].sort().reverse().join(""));
+  const lastIn = digits.length - 1;
 
-  if (possiblySorted === number) return -1;
+  const desc = digits.every((d, i, arr) => {
+    return i === 0 || d <= arr[i - 1];
+  });
 
-  if (digits.length === 2) {
-    return parseInt(digits.reverse().join(""));
+  if (desc) return -1;
+
+  const asc = digits.every((d, i, arr) => {
+    return i === 0 || d > arr[i - 1];
+  });
+
+  const swap = (aI, bI, arr) => {
+    const temp = arr[aI];
+    arr[aI] = arr[bI];
+    arr[bI] = temp;
+
+    return arr;
+  };
+
+  if (asc) {
+    let cp = [...digits];
+    swap(cp.length - 1, cp.length - 2, cp);
+
+    return parseInt(cp.join(""));
   }
-  // for (let c = 0; c < digits.length - 2; c++) {
-  //   if (parseInt(digits[c]) >= digits[c + 1]) {
-  //     inaAsc = false;
-  //   }
-  // }
 
-  // if (inaAsc) {
-  //   const lastI = digits.length - 1;
-  //   const temp = digits[lastI - 1];
-  //   digits[lastI - 1] = digits[lastI];
-  //   digits[lastI] = temp;
+  let stopIn = lastIn;
 
-  //   return parseInt(digits.join(""));
-  // }
-
-  let nextBig;
-  let stopIndex = 0;
-
-  for (let i = digits.length - 2; i >= 0; i--) {
+  for (let i = lastIn - 1; i >= 0; i--) {
     if (digits[i] < digits[i + 1]) {
-      stopIndex = i;
+      stopIn = i;
       break;
     }
   }
 
-  let smallestIndex = digits.length - 1;
-  let smallestToRight = digits[smallestIndex];
+  const left = digits.slice(0, stopIn);
+  const right = digits.slice(stopIn);
+  let smallIdx = 0;
+  let smallest = 9;
 
-  for (let j = digits.length - 1; j > stopIndex; j--) {
-    const current = parseInt(digits[j]);
-
-    if (current < smallestToRight) {
-      smallestToRight = current;
-      smallestIndex = j;
+  for (let c = 1; c < right.length; c++) {
+    if (right[c] > right[0] && right[c] < smallest) {
+      smallIdx = c;
+      smallest = right[c];
     }
   }
 
-  const temp = digits[smallestIndex];
-  digits[smallestIndex] = digits[stopIndex];
-  digits[stopIndex] = temp;
+  swap(0, smallIdx, right);
 
-  const leftArr = digits.slice(0, stopIndex);
-  const rightArr = digits.slice(stopIndex).sort();
+  const sortedPart = right.slice(1).sort();
 
-  const res = parseInt(leftArr.concat(rightArr).join(""));
+  const res = left.concat(right[0]).concat(sortedPart);
 
-  return res;
+  return parseInt(res.join(""));
 };
 
-console.log(next_bigger_number(12));
+console.log(next_bigger_number(534976));
+
+module.exports = next_bigger_number;
