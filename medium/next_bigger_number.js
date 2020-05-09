@@ -13,10 +13,6 @@ const next_bigger_number = (number) => {
   });
 
   const swap = (aI, bI, arr) => {
-    const temp = arr[aI];
-    arr[aI] = arr[bI];
-    arr[bI] = temp;
-
     return arr;
   };
 
@@ -42,15 +38,13 @@ const next_bigger_number = (number) => {
   let smallest = 9;
 
   for (let c = 1; c < right.length; c++) {
-    if (right[c] > right[0] && right[c] <= smallest) {
+    if (right[c] > right[0] && right[c] < smallest) {
       smallIdx = c;
       smallest = right[c];
     }
   }
 
   swap(0, smallIdx, right);
-
-  console.log(right, smallIdx);
 
   const sortedPart = right.slice(1).sort();
 
