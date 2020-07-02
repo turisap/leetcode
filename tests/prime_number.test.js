@@ -13,8 +13,8 @@ describe("should validate prime number", () => {
   test("should return true for 11", () => {
     expect(is_prime(11)).toBe(true);
   });
-  test("should return false for 2", () => {
-    expect(is_prime(2)).toBe(false);
+  test("should return true for 2", () => {
+    expect(is_prime(2)).toBe(true);
   });
   test("should return false for 6", () => {
     expect(is_prime(6)).toBe(false);
