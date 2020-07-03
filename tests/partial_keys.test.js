@@ -1,4 +1,4 @@
-const partial_keys = require("../beginner/partial_keys.js");
+const partial_keys = require("../medium/proxy_keys.js");
 
 describe("returns value for a matched partial key sorted in alphabetic order", () => {
   let testObj = { aaa: 1, abc: 3, dfg: 3, def: 4 };
