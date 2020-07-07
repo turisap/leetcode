@@ -1,0 +1,4 @@
+write that calculator using proxies and closures (2 implementations)
+
+one(plus(two())) closures
+one().plus().two() proxy
