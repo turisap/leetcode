@@ -1,15 +1,7 @@
-let a = function () {
-  console.log('fn')
-}
+const one = () => console.log(1)
+const two = () => console.log(2)
+const three = () => console.log(3)
 
-let b = a;
+one(two(three()))
 
-console.log(b) // [Function: a]
 
-b = null
-
-console.log(a) // [Function: a]
-
-a = null
-
-console.log(b) // null
