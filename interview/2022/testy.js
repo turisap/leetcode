@@ -1,16 +1,19 @@
-var i = 10;
-var array = [];
+var anotherObject = {
+  a: 2
+}
 
-while (i--) {
-    (function (i) {
-        var i = i;
-        array.push(function() {
-            return i + i;
-        });
-    })(i);
-}    
+var myObject = Object.create(anotherObject)
 
-console.log([
-    array[0](), // logs 18 NOT 20, 18 because on the first 
-    array[1](), // logs 16 iteration  the loop i is already 9
-])
+console.log(anotherObject.a)  // 2
+console.log(myObject.a)       // 2
+
+console.log(anotherObject.hasOwnProperty('a')) // true
+console.log(myObject.hasOwnProperty('a'))      // false
+
+// incrementing prototype on anotherObject
+// and creating a on myObject
+myObject.a++ 
+
+console.log(anotherObject.a) // 2
+console.log(myObject.a)      // 3
+console.log(myObject.hasOwnProperty('a')) // true
