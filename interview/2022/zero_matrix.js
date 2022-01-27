@@ -10,26 +10,33 @@ const input1 = [
   [1, 3, 1, 5]
 ]
 
+const input2 = [
+  [1, 1, 3],
+  [0, 5, 6],
+  [3, 5, 9]
+]
+
 const fillMatrix = matrix => {
+  const rowMap = {}
+  const columnMap = {}
+
   for(let R = 0; R < matrix.length; R++) {
     const row = matrix[R]
 
-    for (let C = 0; C < row.length; C++){
-      if(row[C] === 'X') {
-	row[C] = 0;
-	continue;
+    for (let C = 0; C < row.length; C++){ 
+      if(row[C] === 0) {
+	rowMap[R] = true
+	columnMap[C] = true
       }
+    }
+  }
 
-      if(row[C] === 0){
-	const prevRow = R - 1 >= 0 ? R - 1 : null
-	const nextRow = R + 1 < matrix.length ? R + 1 : null
-	const prevItem = C - 1 >= 0 ? C - 1 : null
-	const nextItem = C + 1 < row.length ? C + 1 : null
+  for(let R = 0; R < matrix.length; R++) {
+    const row = matrix[R]
 
-	if(prevRow !== null) matrix[prevRow][C] = 0;
-	if(nextRow !== null) matrix[nextRow][C] = 'X';
-	if(prevItem !== null) matrix[R][prevItem] = 0;
-	if(nextItem !== null) matrix[R][nextItem] = 'X';
+    for (let C = 0; C < row.length; C++){ 
+      if(columnMap[C] || rowMap[R]) {
+	matrix[R][C] = 0
       }
     }
   }
@@ -38,4 +45,4 @@ const fillMatrix = matrix => {
 }
 
 // console.log(fillMatrix(input))
-console.log(fillMatrix(input1))
+console.log(fillMatrix(input2))
