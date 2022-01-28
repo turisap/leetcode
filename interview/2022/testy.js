@@ -17,3 +17,4 @@ myObject.a++
 console.log(anotherObject.a) // 2
 console.log(myObject.a)      // 3
 console.log(myObject.hasOwnProperty('a')) // true
+
