@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "extract-media-query-plugin": "^1.0.24",
-    "node-fetch": "^2.6.7"
+    "is-prime": "^1.0.1",
+    "node-fetch": "^2.6.7",
+    "prime-number-boolean": "^1.2.3"
   }
 }
