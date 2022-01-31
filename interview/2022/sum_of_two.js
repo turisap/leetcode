@@ -21,3 +21,5 @@ const sumOfTwo = (arr, target) => {
 console.log(sumOfTwo(input, 9))
 console.log(sumOfTwo(input2, 18))
 console.log(sumOfTwo(input3, 9))
+
+module.exports = sumOfTwo
