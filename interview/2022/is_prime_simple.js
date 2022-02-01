@@ -22,18 +22,18 @@ const myPrime = number => {
 }
 
 let i = 1
-while(true){
-  const prime = myPrime(i)
-  const thatPrime = Boolean(isPrime.thisNumber(i))
-
-  if(prime !== thatPrime){
-    console.log(`Error: Int:${i} ${prime} !== ${thatPrime}`)
-    break;
-  }
-
-  console.log('=============')
-  console.log(`OK: Int:${i} ${prime} === ${thatPrime.toString()}`)
-  i++
-}
+//  while(true){
+//    const prime = myPrime(i)
+//    const thatPrime = Boolean(isPrime.thisNumber(i))
+//
+//    if(prime !== thatPrime){
+//      console.log(`Error: Int:${i} ${prime} !== ${thatPrime}`)
+//      break;
+//    }
+//
+//    console.log('=============')
+//    console.log(`OK: Int:${i} ${prime} === ${thatPrime.toString()}`)
+//    i++
+//  }
 
 module.exports = myPrime
