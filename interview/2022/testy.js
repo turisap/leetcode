@@ -1,20 +1,34 @@
-var anotherObject = {
-  a: 2
+const summ = (a, b) => {
+  // 
+  const res = []
+
+  while(a.length || b.length){
+    const summ = Math.floor(a + b)
+
+    res.push(summ)
+  }
 }
 
-var myObject = Object.create(anotherObject)
 
-console.log(anotherObject.a)  // 2
-console.log(myObject.a)       // 2
+const summ = (a, b) => {
+  const res = ''
 
-console.log(anotherObject.hasOwnProperty('a')) // true
-console.log(myObject.hasOwnProperty('a'))      // false
+  while(a.length || b.length){
+    const summ = Math.floor(a + b)
 
-// incrementing prototype on anotherObject
-// and creating a on myObject
-myObject.a++ 
+    // 
+    res = `${summ}${res}`
+  }
+}
 
-console.log(anotherObject.a) // 2
-console.log(myObject.a)      // 3
-console.log(myObject.hasOwnProperty('a')) // true
 
+const summ = (a, b) => {
+  // 
+  const res = new Array(Math.max(a.length, b.length))
+
+  while(a.length || b.length){
+    const summ = Math.floor(a + b)
+
+    res.push(summ)
+  }
+}
