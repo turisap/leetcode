@@ -1,34 +1,14 @@
-const summ = (a, b) => {
-  // 
-  const res = []
+const pr = new Promise(res => {
+  setTimeout(() => res(5), 1000)
+})
 
-  while(a.length || b.length){
-    const summ = Math.floor(a + b)
+pr
+.then(r => r + 1)
+.then(r => {
+  throw new Error ('ololo')
 
-    res.push(summ)
-  }
-}
-
-
-const summ = (a, b) => {
-  const res = ''
-
-  while(a.length || b.length){
-    const summ = Math.floor(a + b)
-
-    // 
-    res = `${summ}${res}`
-  }
-}
-
-
-const summ = (a, b) => {
-  // 
-  const res = new Array(Math.max(a.length, b.length))
-
-  while(a.length || b.length){
-    const summ = Math.floor(a + b)
-
-    res.push(summ)
-  }
-}
+  return r * 2
+})
+.catch(err => err)
+// logs res is Error: ololo
+.then(r => console.log('res is', r))
