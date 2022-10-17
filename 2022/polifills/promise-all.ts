@@ -1,6 +1,5 @@
-// @TODO next all settled
-type SuccessCB<T> = (val: T) => void;
-type FailureCB = (err: any) => void;
+export type SuccessCB<T> = (val: T) => void;
+export type FailureCB = (err: any) => void;
 
 class PromiseAllPolyfill<T extends unknown[] | []> {
   private resolveCounter = 0;
