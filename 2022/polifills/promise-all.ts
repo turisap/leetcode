@@ -37,7 +37,12 @@ class PromiseAllPolyfill<T extends unknown[] | []> {
 
   private _init(values: any[]) {
     values.forEach((value, idx) => {
-      if (typeof value.then !== "undefined") {
+      const isThenable =
+        value !== null &&
+        typeof value === "object" &&
+        typeof value.then === "function";
+
+      if (isThenable) {
         value
           .then((res: any) => {
             this.result[idx] = res;
@@ -78,7 +83,7 @@ const pr3 = new Promise((res, rej) => {
   setTimeout(res, 1500, "all good");
 });
 
-const res = new PromiseAllPolyfill<string[]>([pr1, pr2, 5, pr3])
+const res = new PromiseAllPolyfill<string[]>([pr1, pr2, 5, null, pr3])
   .then(console.log)
   .catch((err) => {
     console.log(err);
