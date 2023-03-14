@@ -18,4 +18,21 @@ const postorderTraversal = (root) => {
   return res;
 };
 
-module.exports = postorderTraversal;
+const postOrderRecursive = (root) => {
+  if (!root) return [];
+  const res = [];
+
+  const inner = (root) => {
+    if (!root) return null;
+
+    res.push(root.val);
+    inner(root.left);
+    inner(root.right);
+  };
+
+  inner(root);
+
+  return res;
+};
+
+module.exports = postOrderRecursive;
