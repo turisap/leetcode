@@ -40,4 +40,20 @@ describe("", () => {
 
     expect(res).toEqual([4, 2, 5, 1, 6, 3]);
   });
+
+  it("should return ", () => {
+    const testTree = {
+      val: 2,
+      left: {
+        val: 3,
+        left: {
+          val: 1,
+        },
+      },
+    };
+
+    const res = inorderTraversal(testTree);
+
+    expect(res).toEqual([1, 3, 2]);
+  });
 });
