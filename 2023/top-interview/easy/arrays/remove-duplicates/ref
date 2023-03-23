@@ -1,4 +1,3 @@
-function removeDuplicatesFromSorted(array) {
   let count = 1;
 
   if (!array.length) {
@@ -15,6 +14,3 @@ function removeDuplicatesFromSorted(array) {
   }
 
   return count;
-}
-
-module.exports = removeDuplicatesFromSorted;
