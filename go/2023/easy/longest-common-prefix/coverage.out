@@ -1,0 +1,25 @@
+mode: set
+lcp/main.go:9.29,11.2 1 1
+lcp/main.go:13.34,15.2 1 1
+lcp/main.go:17.39,19.2 1 1
+lcp/main.go:21.42,26.33 3 1
+lcp/main.go:26.33,32.26 4 1
+lcp/main.go:32.26,33.25 1 1
+lcp/main.go:33.25,35.10 2 1
+lcp/main.go:40.2,40.8 1 1
+lcp/main.go:43.41,46.33 2 1
+lcp/main.go:46.33,52.26 4 1
+lcp/main.go:52.26,53.25 1 1
+lcp/main.go:53.25,55.10 2 1
+lcp/main.go:60.2,60.8 1 1
+lcp/main.go:63.39,64.20 1 1
+lcp/main.go:64.20,66.3 1 1
+lcp/main.go:68.2,70.33 2 1
+lcp/main.go:70.33,74.58 3 1
+lcp/main.go:74.58,76.4 1 1
+lcp/main.go:78.3,80.20 2 1
+lcp/main.go:80.20,82.4 1 1
+lcp/main.go:85.2,85.8 1 1
+lcp/main.go:88.31,89.11 1 1
+lcp/main.go:89.11,91.3 1 1
+lcp/main.go:92.2,92.10 1 1

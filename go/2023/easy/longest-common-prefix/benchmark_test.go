@@ -14,18 +14,6 @@ import "testing"
 		benchstat cpu1 cpu2
 */
 
-//func BenchmarkSubLCPRegWith(b *testing.B) {
-//
-//	for _, testCase := range testCases {
-//		testCase := testCase
-//		b.Run(testCase.name, func(b *testing.B) {
-//			for i := 0; i < b.N; i++ {
-//				LCPReg(testCase.strs)
-//			}
-//		})
-//	}
-//}
-
 func BenchmarkLCPReg(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		LCPReg(testCases[0].strs)
@@ -35,5 +23,11 @@ func BenchmarkLCPReg(b *testing.B) {
 func BenchmarkLCPL(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		LCPL(testCases[0].strs)
+	}
+}
+
+func BenchmarkLCPSort(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		LCPSort(testCases[0].strs)
 	}
 }

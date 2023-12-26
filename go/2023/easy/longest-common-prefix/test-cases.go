@@ -8,4 +8,5 @@ var testCases = []struct {
 	{"fl", []string{"flower", "flow", "flight"}, "fl"},
 	{"none", []string{"dog", "racecar", "car"}, ""},
 	{"a", []string{"ab", "a"}, "a"},
+	{"first for len 1", []string{"first"}, "first"},
 }

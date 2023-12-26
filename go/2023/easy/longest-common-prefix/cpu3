@@ -1,0 +1,16 @@
+goos: darwin
+goarch: arm64
+pkg: lcp
+BenchmarkLCPSort
+BenchmarkLCPSort-8   	34845110	        34.26 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	34065141	        34.28 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	35022648	        34.14 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	35104825	        34.19 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	34842024	        34.35 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	34301271	        34.61 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	34678029	        34.70 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	35168613	        34.20 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	34801185	        34.19 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLCPSort-8   	35084941	        34.18 ns/op	      24 B/op	       1 allocs/op
+PASS
+ok  	lcp	13.565s
