@@ -11,8 +11,7 @@ create_files_func() {
     mkdir "$dir_name" || return 1
     touch "$dir_name/main.go" "$dir_name/${dir_name}_test.go" "$dir_name/benchmark_test.go" || return 1
 
-    local line_to_add=$package_name
-    line_to_add="package $package_name"
+    local line_to_add="package main"
 
     for file in "$dir_name"/*.go; do
         echo "$line_to_add" > "$file" || return 1
@@ -61,7 +60,11 @@ create_files_func() {
     	1) run benchmarks without unit tests \"go test -v -bench=${package_upper} -run=XXX -benchmem\"
     	2) run benchMarks for specific implementation \"go test -bench=Benchmark${package_upper}Reg -run=XXX -count=10 -benchmem > ${package_name}reg.txt\"
     	3) run benchMarks for another implementation \"go test -bench=Benchmark${package_upper}it -run=XXX -count=10 -benchmem > ${package_name}rit.txt\"
-    	3) compare results \"benchstat ${package_name}reg.txt ${package_name}it.txt\"
+    	4) compare results \"benchstat ${package_name}reg.txt ${package_name}it.txt\" // CAN BE DONE WITH CPU AS WELL
+    	5) cpu profile \"go test -cpuprofile cpu.prof -bench=${package_upper} -run=XXX\"
+        6) cpu profile interactive \"go tool pprof cpu.prof\". Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+        7) memory profile \"go test -memprofile mem.prof -bench=${package_upper} -run=XXX\".
+        8) memory profile \"go tool pprof mem.prof\". Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
     */
 
 
