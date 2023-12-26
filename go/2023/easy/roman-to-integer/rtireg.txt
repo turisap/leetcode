@@ -1,0 +1,15 @@
+goos: darwin
+goarch: arm64
+pkg: rti
+BenchmarkRTIReg-8   	 5323138	       193.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6193586	       193.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6244341	       192.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6236764	       192.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6230598	       192.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6244538	       192.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6241274	       192.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6236634	       192.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6245840	       193.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRTIReg-8   	 6040674	       197.1 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	rti	14.331s

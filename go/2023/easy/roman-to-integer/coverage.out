@@ -1,0 +1,13 @@
+mode: set
+rti/main.go:22.31,23.26 1 1
+rti/main.go:23.26,27.20 3 1
+rti/main.go:27.20,29.4 1 1
+rti/main.go:31.3,35.9 3 1
+rti/main.go:35.9,39.12 3 1
+rti/main.go:42.3,43.6 2 1
+rti/main.go:46.2,46.8 1 1
+rti/main.go:49.29,51.22 1 1
+rti/main.go:51.22,53.13 2 1
+rti/main.go:53.13,54.50 1 1
+rti/main.go:54.50,56.5 1 1
+rti/main.go:60.2,60.10 1 1

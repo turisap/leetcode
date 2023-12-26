@@ -1,4 +1,5 @@
 const twoSum = require("./two-sum");
+
 describe("Two sum", () => {
   it("should return [1,3]", () => {
     const input = [1, 2, 5, 7];

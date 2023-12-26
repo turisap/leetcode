@@ -1,0 +1,25 @@
+alias mktask='create_files_func'
+
+create_files_func() {
+   if [ $# -eq 0 ]; then
+         echo "Please provide a directory name."
+         return 1
+     fi
+
+     local dir_name="$1"
+     local package_name="$2"
+     mkdir "$dir_name" || return 1
+     touch "$dir_name/main.go" "$dir_name/${dir_name}_test.go" "$dir_name/benchmark_test.go" || return 1
+
+     local line_to_add=$package_name
+     local func_to_add="\n\nfunc $package_name() {}"
+     line_to_add="package $package_name"
+
+     for file in "$dir_name"/*.go; do
+         echo "$line_to_add" > "$file" || return 1
+     done
+
+     echo "$func_to_add" >> "$dir_name/main.go" || return 1
+
+     echo "Directory '$dir_name' and files created successfully."
+}
