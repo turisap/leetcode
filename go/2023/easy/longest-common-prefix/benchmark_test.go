@@ -3,16 +3,6 @@ package main
 import "testing"
 
 /*
-   	1) run benchmarks without unit tests "go test -v -bench=LCP -run=XXX -benchmem"
-   	2) run benchMarks for specific implementation "go test -bench=BenchmarkLCPReg -run=XXX -count=10 -benchmem > lcpreg.txt"
-   	3) run benchMarks for another implementation "go test -bench=BenchmarkLCPit -run=XXX -count=10 -benchmem > lcprit.txt"
-   	4) compare results "benchstat lcpreg.txt lcpit.txt" // CAN BE DONE WITH CPU AS WELL
-   	5) cpu profile "go test -cpuprofile cpu.prof -bench=LCP -run=XXX"
-    6) cpu profile interactive "go tool pprof cpu.prof". Interactive command "top", "web", "list <<FUNC NAME>>"
-    7) memory profile "go test -memprofile mem.prof -bench=LCP -run=XXX".
-    8) memory profile "go tool pprof mem.prof". Interactive command "top", "web", "list <<FUNC NAME>>"
-
-	=========================
 	1) go test -v -bench=  -run=XXX  -cpuprofile=cpu.pprof
 	2) cpu profile interactive "go tool pprof cpu.pprof". Interactive command "top", "web", "list <<FUNC NAME>>"
 	3) go test -v -bench= -run=XXX -memprofile=mem.pprof
