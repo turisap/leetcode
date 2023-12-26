@@ -6,7 +6,11 @@ import "testing"
 	1) run benchmarks without unit tests "go test -v -bench=RTI -run=XXX -benchmem"
 	2) run benchMarks for specific implementation "go test -bench=BenchmarkRTIReg -run=XXX -count=10 -benchmem > rtireg.txt"
 	3) run benchMarks for another implementation "go test -bench=BenchmarkRTIIt -run=XXX -count=10 -benchmem > rtirit.txt"
-	3) compare results "benchstat rtireg.txt rtiit.txt"
+	4) compare results "benchstat rtireg.txt rtiit.txt"
+	5) cpu profile "go test -cpuprofile cpu.prof -bench=RTI -run=XXX"
+	6) cpu profile interactive "go tool pprof cpu.prof". Interactive command "top", "web", "list <<FUNC NAME>>"
+	7) memory profile "go test -memprofile mem.prof -bench=RTI -run=XXX".
+	7) memory profile "go tool pprof mem.prof". Interactive command "top", "web", "list <<FUNC NAME>>"
 */
 
 func BenchmarkSubRTIRegWith(b *testing.B) {
