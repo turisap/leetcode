@@ -1,0 +1,32 @@
+goos: darwin
+goarch: arm64
+pkg: lcp
+BenchmarkLCPL
+BenchmarkLCPL-8   	180092014	         6.535 ns/op
+BenchmarkLCPL-8   	184091584	         6.519 ns/op
+BenchmarkLCPL-8   	184055689	         6.539 ns/op
+BenchmarkLCPL-8   	183510286	         6.555 ns/op
+BenchmarkLCPL-8   	182874988	         6.557 ns/op
+BenchmarkLCPL-8   	183150625	         6.528 ns/op
+BenchmarkLCPL-8   	183772867	         6.557 ns/op
+BenchmarkLCPL-8   	182013501	         6.616 ns/op
+BenchmarkLCPL-8   	182208457	         6.602 ns/op
+BenchmarkLCPL-8   	181771878	         6.639 ns/op
+PASS
+ok  	lcp	18.771s
+goos: darwin
+goarch: arm64
+pkg: lcp
+BenchmarkLCPL
+BenchmarkLCPL-8   	182425621	         6.522 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	184000716	         6.518 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	184053172	         6.522 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	184134062	         6.519 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	183905755	         6.517 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	184104270	         6.517 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	183569788	         6.522 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	184171801	         6.521 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	181994431	         6.532 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCPL-8   	183899155	         6.521 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	lcp	18.697s
