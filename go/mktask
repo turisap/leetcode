@@ -1,25 +1,104 @@
 alias mktask='create_files_func'
 
 create_files_func() {
-   if [ $# -eq 0 ]; then
-         echo "Please provide a directory name."
-         return 1
-     fi
+  if [ $# -eq 0 ]; then
+        echo "Please provide a directory name."
+        return 1
+    fi
 
-     local dir_name="$1"
-     local package_name="$2"
-     mkdir "$dir_name" || return 1
-     touch "$dir_name/main.go" "$dir_name/${dir_name}_test.go" "$dir_name/benchmark_test.go" || return 1
+    local dir_name="$1"
+    local package_name="$2"
+    mkdir "$dir_name" || return 1
+    touch "$dir_name/main.go" "$dir_name/${dir_name}_test.go" "$dir_name/benchmark_test.go" || return 1
 
-     local line_to_add=$package_name
-     local func_to_add="\n\nfunc $package_name() {}"
-     line_to_add="package $package_name"
+    local line_to_add=$package_name
+    line_to_add="package $package_name"
 
-     for file in "$dir_name"/*.go; do
-         echo "$line_to_add" > "$file" || return 1
-     done
+    for file in "$dir_name"/*.go; do
+        echo "$line_to_add" > "$file" || return 1
+    done
 
-     echo "$func_to_add" >> "$dir_name/main.go" || return 1
+    # main.go
+    package_upper=$(echo "$package_name" | tr '[:lower:]' '[:upper:]')
+    echo  "\n\nfunc ${package_upper}Reg() {}" >> "$dir_name/main.go" || return 1
+    echo  "\n\nfunc ${package_upper}L() {}" >> "$dir_name/main.go" || return 1
 
-     echo "Directory '$dir_name' and files created successfully."
+    # _test.go
+    test_template="import \"testing\"\n
+        /*
+        	1) go test -run Test${package_upper}SubTest
+        	2) check coverage \"go test -coverprofile=coverage.out\"
+        	3) check coverage by function: \"go tool cover -func=coverage.out\"
+        	4) check coverage: \"go tool cover -html=coverage.out\"
+        */
+
+
+        func Test${package_upper}SubTest(t *testing.T) {
+        	testCases := []struct {
+        		name   string
+        		s      string
+        		result int
+        	}{
+        		{\"II\", \"II\", 2},
+        	}
+        	for _, testCase := range testCases {
+        		t.Run(testCase.name, func(t *testing.T) {
+        			result := 0
+        			if result != testCase.result {
+        				t.Errorf(\"${package_upper} %s produces %d, got %d\", testCase.s, testCase.result, result)
+        			}
+        		})
+        	}
+        }
+        "
+
+    echo "$test_template" >> "$dir_name/${dir_name}_test.go" || return 1
+
+    # benchmark.go
+    bench_template="import \"testing\"\n
+
+    /*
+    	1) run benchmarks without unit tests \"go test -v -bench=${package_upper} -run=XXX -benchmem\"
+    	2) run benchMarks for specific implementation \"go test -bench=Benchmark${package_upper}Reg -run=XXX -count=10 -benchmem > ${package_name}reg.txt\"
+    	3) run benchMarks for another implementation \"go test -bench=Benchmark${package_upper}it -run=XXX -count=10 -benchmem > ${package_name}rit.txt\"
+    	3) compare results \"benchstat ${package_name}reg.txt ${package_name}it.txt\"
+    */
+
+
+     func BenchmarkSub${package_upper}RegWith(b *testing.B) {
+     	testCases := []struct {
+                		name   string
+                		s      string
+                		result int
+                	}{
+                		{\"II\", \"II\", 2},
+                	}
+
+     	for _, testCase := range testCases {
+     		testCase := testCase
+     		b.Run(testCase.name, func(b *testing.B) {
+     			for i := 0; i < b.N; i++ {
+     				${package_upper}Reg(testCase.s)
+     			}
+     		})
+     	}
+     }
+
+     func Benchmark${package_upper}Reg(b *testing.B) {
+     	for i := 0; i < b.N; i++ {
+     		${package_upper}Reg()
+     	}
+     }
+
+     func Benchmark${package_upper}L(b *testing.B) {
+     	for i := 0; i < b.N; i++ {
+     		${package_upper}L()
+     	}
+     }
+    "
+
+    echo "$bench_template" >> "$dir_name/benchmark_test.go" || return 1
+
+
+    echo "Directory '$dir_name' and files created successfully."
 }
