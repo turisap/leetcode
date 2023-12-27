@@ -1,4 +1,3 @@
-
 create_files_func() {
   if [ $# -eq 0 ]; then
         echo "Please provide a directory name."
@@ -18,26 +17,40 @@ create_files_func() {
 
     # main.go
     package_upper=$(echo "$package_name" | tr '[:lower:]' '[:upper:]')
-    echo  "\n\nfunc ${package_upper}Reg() {}" >> "$dir_name/main.go" || return 1
-    echo  "\n\nfunc ${package_upper}L() {}" >> "$dir_name/main.go" || return 1
+    echo  "\n\nfunc ${package_name}Naive() {}" >> "$dir_name/main.go" || return 1
+    echo  "\n\nfunc ${package_name}Improved() {}" >> "$dir_name/main.go" || return 1
 
     # _test.go
     test_template="import \"testing\"\n
         /*
-               	1) go test -run Test${package_upper}SubTest
-               	2) check coverage
-               	    go test -coverprofile=coverage.out
-               	3) check coverage by function:
-               	    go tool cover -func=coverage.out
-               	4) check coverage:
-               	    go tool cover -html=coverage.out
-               */
+        	1) Test naive
+        	    go test -run Test${package_upper}NaiveSubTest
+        	1a)Test improved
+        	    go test -run Test${package_upper}NaiveSubTest
+        	2) check coverage
+        	    go test -coverprofile=coverage.out
+        	3) check coverage by function:
+        	    go tool cover -func=coverage.out
+        	4) check coverage:
+        	    go tool cover -html=coverage.out
+        */
 
 
-        func Test${package_upper}SubTest(t *testing.T) {
+        func Test${package_upper}NaiveSubTest(t *testing.T) {
         	for _, testCase := range testCases {
         		t.Run(testCase.name, func(t *testing.T) {
-        			result := 0
+        			result := ${package_name}Naive()
+        			if result != testCase.result {
+        				t.Errorf(\"${package_upper} %s produces %d, got %d\", testCase.s, testCase.result, result)
+        			}
+        		})
+        	}
+        }
+
+        func Test${package_upper}ImprovedSubTest(t *testing.T) {
+        	for _, testCase := range testCases {
+        		t.Run(testCase.name, func(t *testing.T) {
+        			result := ${package_name}Improved()
         			if result != testCase.result {
         				t.Errorf(\"${package_upper} %s produces %d, got %d\", testCase.s, testCase.result, result)
         			}
@@ -53,18 +66,18 @@ create_files_func() {
 
     /*
           == 1st implementation ==
-          1) go test -v -bench=${package_upper}Reg  -run=XXX  -cpuprofile=cpu.pprof
+          1) go test -v -bench=${package_upper}Naive  -run=XXX  -cpuprofile=cpu.pprof
           2) cpu profile interactive
        		go tool pprof cpu.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
-          3) go test -v -bench=${package_upper}Reg -run=XXX -memprofile=mem.pprof
+          3) go test -v -bench=${package_upper}Naive -run=XXX -memprofile=mem.pprof
           4) mem profile interactive
        		go tool pprof mem.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
 
-        == 2nd implementation ==
-         1) go test -v -bench=${package_upper}L  -run=XXX  -cpuprofile=cpu.pprof
+         == 2nd implementation ==
+         1) go test -v -bench=${package_upper}Improved  -run=XXX  -cpuprofile=cpu.pprof
          2) cpu profile interactive
             go tool pprof cpu.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
-         3) go test -v -bench=${package_upper}L -run=XXX -memprofile=mem.pprof
+         3) go test -v -bench=${package_upper}Improved -run=XXX -memprofile=mem.pprof
          4) mem profile interactive
             go tool pprof mem.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
 
@@ -72,32 +85,43 @@ create_files_func() {
          5) compare results of two implementations in console
             go test -v -bench . -benchmem -run=XXX
          6) create cpu profile  with count
-           go test -count=10  -bench=Benchmark${package_upper}Reg -run=XXX -benchmem  > stat1 &&
-           go test -count=10  -bench=Benchmark${package_upper}L -run=XXX -benchmem > stat2
+           go test -count=10  -bench=Benchmark${package_upper}Naive -run=XXX -benchmem  > stat1 &&
+           go test -count=10  -bench=Benchmark${package_upper}Improved -run=XXX -benchmem > stat2
          7) compare with
              benchstat stat1 stat2
-    */
+            */
 
    //  func BenchmarkSub${package_upper}RegWith(b *testing.B) {
    //  	for _, testCase := range testCases {
    //  		testCase := testCase
    //  		b.Run(testCase.name, func(b *testing.B) {
    //  			for i := 0; i < b.N; i++ {
-   //  				${package_upper}Reg(testCase.s)
+   //  				${package_name}Naive(testCase.s)
    //  			}
    //  		})
    //  	}
    //  }
 
-     func Benchmark${package_upper}Reg(b *testing.B) {
+   //  func BenchmarkSub${package_upper}ImprovedWith(b *testing.B) {
+   //  	for _, testCase := range testCases {
+   //  		testCase := testCase
+   //  		b.Run(testCase.name, func(b *testing.B) {
+   //  			for i := 0; i < b.N; i++ {
+   //  				${package_name}Improved(testCase.s)
+   //  			}
+   //  		})
+   //  	}
+   //  }
+
+     func Benchmark${package_upper}Naive(b *testing.B) {
      	for i := 0; i < b.N; i++ {
-     		${package_upper}Reg()
+     		${package_name}Naive()
      	}
      }
 
-     func Benchmark${package_upper}L(b *testing.B) {
+     func Benchmark${package_upper}Improved(b *testing.B) {
      	for i := 0; i < b.N; i++ {
-     		${package_upper}L()
+     		${package_name}Improved()
      	}
      }
     "
@@ -116,11 +140,4 @@ create_files_func() {
     echo "$bench_template" >> "$dir_name/benchmark_test.go" || return 1
 
     echo "Directory '$dir_name' and files created successfully."
-}
-
-prompt_context() {
-  # Custom (Random emoji)
-  emojis=("⚡️" "🔥" "💀" "👑" "😎" "🐸" "🐵" "🦄" "🌈" "🍻" "🚀" "💡" "🎉" "🔑" "🇹🇭" "🚦" "🌙")
-  RAND_EMOJI_N=$(( $RANDOM % ${#emojis[@]} + 1))
-  prompt_segment black default "${emojis[$RAND_EMOJI_N]} "
 }
