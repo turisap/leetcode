@@ -1,8 +1,20 @@
+#!/bin/bash
+
 create_files_func() {
-  if [ $# -eq 0 ]; then
-        echo "Please provide a directory name."
-        return 1
-    fi
+    if [ $# -lt 2 ]; then
+         echo "Please provide a directory name and a package name"
+         return 1
+     fi
+
+     if [ -z "$1" ]; then
+         echo "Please provide a name for the new directory"
+         return 1
+     fi
+
+     if [ -z "$2" ]; then
+         echo "Please provide a solution name"
+         return 1
+     fi
 
     local dir_name="$1"
     local package_name="$2"
