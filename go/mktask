@@ -52,15 +52,28 @@ create_files_func() {
     bench_template="import \"testing\"\n
 
     /*
-        1) go test -v -bench=  -run=XXX  -cpuprofile=cpu.pprof
-        2) cpu profile interactive \"go tool pprof cpu.pprof\". Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
-        3) go test -v -bench= -run=XXX -memprofile=mem.pprof
-        4) mem profile interactive \"go tool pprof mem.pprof\". Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
-        5) create cpu profile  with count
-            go test -count=10 -v -bench=Benchmark${package_upper}Reg -run=XXX -benchmem  >> cpu1 &&
-            go test -count=10 -v -bench=Benchmark${package_upper}L -run=XXX -benchmem >> cpu2
-        6) compare with
-            benchstat cpu1 cpu2
+          == 1st implementation ==
+          1) go test -v -bench=${package_upper}Reg  -run=XXX  -cpuprofile=cpu.pprof
+          2) cpu profile interactive
+       		go tool pprof cpu.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+          3) go test -v -bench=${package_upper}Reg -run=XXX -memprofile=mem.pprof
+          4) mem profile interactive
+       		go tool pprof mem.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+
+       	  == 2nd implementation ==
+           1) go test -v -bench=${package_upper}Reg  -run=XXX  -cpuprofile=cpu.pprof
+           2) cpu profile interactive
+          	go tool pprof cpu.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+          3) go test -v -bench=${package_upper}Reg -run=XXX -memprofile=mem.pprof
+          4) mem profile interactive
+          	go tool pprof mem.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+          5) compare results of two implementations in console
+       		go test -v -bench . -benchmem -run=XXX
+          6) create cpu profile  with count
+            go test -count=10  -bench=Benchmark${package_upper}Reg -run=XXX -benchmem  > stat1 &&
+            go test -count=10  -bench=Benchmark${package_upper}L -run=XXX -benchmem > stat2
+          7) compare with
+              benchstat stat1 stat2
     */
 
    //  func BenchmarkSub${package_upper}RegWith(b *testing.B) {
@@ -101,4 +114,11 @@ create_files_func() {
     echo "$bench_template" >> "$dir_name/benchmark_test.go" || return 1
 
     echo "Directory '$dir_name' and files created successfully."
+}
+
+prompt_context() {
+  # Custom (Random emoji)
+  emojis=("⚡️" "🔥" "💀" "👑" "😎" "🐸" "🐵" "🦄" "🌈" "🍻" "🚀" "💡" "🎉" "🔑" "🇹🇭" "🚦" "🌙")
+  RAND_EMOJI_N=$(( $RANDOM % ${#emojis[@]} + 1))
+  prompt_segment black default "${emojis[$RAND_EMOJI_N]} "
 }

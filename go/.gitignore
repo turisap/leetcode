@@ -2,3 +2,9 @@
 *swp
 
 .idea/**
+
+coverage.out
+stat1
+stat2
+*.test
+*.pprof
