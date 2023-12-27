@@ -4,7 +4,6 @@
 .idea/**
 
 coverage.out
-stat1
-stat2
+stat*[0-9]
 *.test
 *.pprof
