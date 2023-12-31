@@ -1,0 +1,15 @@
+goos: darwin
+goarch: arm64
+pkg: ptr
+BenchmarkPTRNaive-8   	  310329	      3282 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  371169	      3269 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  361959	      3249 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  367815	      3269 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  359138	      3294 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  359360	      3265 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  361443	      3253 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  369865	      3374 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  363970	      3355 ns/op	   13568 B/op	      56 allocs/op
+BenchmarkPTRNaive-8   	  309276	      3322 ns/op	   13568 B/op	      56 allocs/op
+PASS
+ok  	ptr	12.088s
