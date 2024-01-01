@@ -77,21 +77,21 @@ create_files_func() {
     bench_template="import \"testing\"\n
 
     /*
-          == 1st implementation ==
-          1) go test -v -bench=${package_upper}Recursive  -run=XXX  -cpuprofile=cpu.pprof
+         == 1st implementation ==
+          1) go test -v -bench=${package_upper}Recursive  -run=XXX  -cpuprofile=cpu1.pprof
           2) cpu profile interactive
-            go tool pprof cpu.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
-          3) go test -v -bench=${package_upper}Recursive -run=XXX -memprofile=mem.pprof
+           go tool pprof cpu1.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+          3) go test -v -bench=${package_upper}Recursive -run=XXX -memprofile=mem1.pprof
           4) mem profile interactive
-            go tool pprof mem.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+           go tool pprof mem1.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
 
          == 2nd implementation ==
-         1) go test -v -bench=${package_upper}Iterative  -run=XXX  -cpuprofile=cpu.pprof
+         1) go test -v -bench=${package_upper}Iterative  -run=XXX  -cpuprofile=cpu2.pprof
          2) cpu profile interactive
-            go tool pprof cpu.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
-         3) go test -v -bench=${package_upper}Iterative -run=XXX -memprofile=mem.pprof
+            go tool pprof cpu2.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+         3) go test -v -bench=${package_upper}Iterative -run=XXX -memprofile=mem2.pprof
          4) mem profile interactive
-            go tool pprof mem.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
+            go tool pprof mem2.pprof | Interactive command \"top\", \"web\", \"list <<FUNC NAME>>\"
 
          == comparison ==
          5) compare results of two implementations in console
