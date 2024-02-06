@@ -1,5 +1,10 @@
 package main
 
+import (
+	"github.com/thoas/go-funk"
+	"testing"
+)
+
 /*
       == 1st implementation ==
       1) go test -v -bench=RDCRecursive  -run=XXX  -cpuprofile=cpu1.pprof
@@ -37,19 +42,20 @@ package main
 //  	}
 //  }
 
-//  func BenchmarkSubRDCIterativeWith(b *testing.B) {
-//  	for _, testCase := range testCases {
-//  		testCase := testCase
-//  		b.Run(testCase.name, func(b *testing.B) {
-//  			for i := 0; i < b.N; i++ {
-//  				rdcIterative(testCase.s)
-//  			}
-//  		})
-//  	}
-//  }
+var testCase = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
 
-//func BenchmarkRDCRecursive(b *testing.B) {
-//	for i := 0; i < b.N; i++ {
-//		reduceCustom()
-//	}
-//}
+func reducer(acc, val int) int {
+	return acc + val
+}
+
+func BenchmarkRDCLib(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		funk.Reduce(testCase, reducer, 0)
+	}
+}
+
+func BenchmarkRDC(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		reduceCustom[int, []int](testCase, reducer)
+	}
+}
