@@ -12,6 +12,10 @@ type ReturnType interface {
 type Reducer[T ReturnType, V any] func(acc T, value V) T
 
 func reduceCustom[T ReturnType, V []T](arr V, reducer Reducer[T, T]) (r T) {
+	if len(arr) == 0 {
+		return r
+	}
+
 	var initialAcc T
 
 	for _, v := range arr {

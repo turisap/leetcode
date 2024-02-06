@@ -5,8 +5,7 @@ import "testing"
 /*
 	1) Test Recursive
 	    go test -run TestRDCRecursiveSubTest
-	1a)Test Iterative
-	    go test -run TestRDCIterativeSubTest
+
 	2) check coverage
 	    go test -coverprofile=coverage.out
 	3) check coverage by function:
@@ -15,12 +14,29 @@ import "testing"
 	    go tool cover -html=coverage.out
 */
 
-func TestRDCRecursiveSubTest(t *testing.T) {
-	for _, testCase := range testCases {
+func TestRDCRecursiveSubTestInt(t *testing.T) {
+	for _, testCase := range intCases {
+		tt := testCase
 		t.Run(testCase.name, func(t *testing.T) {
-			result := reduceCustom()
-			if result != testCase.result {
-				t.Errorf("RDC %s produces %d, got %d", testCase.s, testCase.result, result)
+			result := reduceCustom[int, []int](tt.input, func(acc, val int) int {
+				return acc + val
+			})
+			if result != tt.result {
+				t.Errorf("RDC %v produces %d, got %d", tt.input, tt.result, result)
+			}
+		})
+	}
+}
+
+func TestRDCRecursiveSubTestString(t *testing.T) {
+	for _, testCase := range stringCases {
+		tt := testCase
+		t.Run(testCase.name, func(t *testing.T) {
+			result := reduceCustom[string, []string](tt.input, func(acc, val string) string {
+				return acc + val
+			})
+			if result != tt.result {
+				t.Errorf("RDC %v produces %s, got %s", tt.input, tt.result, result)
 			}
 		})
 	}

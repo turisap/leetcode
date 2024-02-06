@@ -1,7 +1,5 @@
 package main
 
-import "testing"
-
 /*
       == 1st implementation ==
       1) go test -v -bench=RDCRecursive  -run=XXX  -cpuprofile=cpu1.pprof
@@ -50,8 +48,8 @@ import "testing"
 //  	}
 //  }
 
-func BenchmarkRDCRecursive(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		reduceCustom()
-	}
-}
+//func BenchmarkRDCRecursive(b *testing.B) {
+//	for i := 0; i < b.N; i++ {
+//		reduceCustom()
+//	}
+//}
