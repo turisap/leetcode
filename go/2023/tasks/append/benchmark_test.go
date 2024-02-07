@@ -28,28 +28,6 @@ import "testing"
        benchstat stat1 stat2
 */
 
-//  func BenchmarkSubAPDRegWith(b *testing.B) {
-//  	for _, testCase := range testCases {
-//  		testCase := testCase
-//  		b.Run(testCase.name, func(b *testing.B) {
-//  			for i := 0; i < b.N; i++ {
-//  				apdRecursive(testCase.s)
-//  			}
-//  		})
-//  	}
-//  }
-
-//  func BenchmarkSubAPDIterativeWith(b *testing.B) {
-//  	for _, testCase := range testCases {
-//  		testCase := testCase
-//  		b.Run(testCase.name, func(b *testing.B) {
-//  			for i := 0; i < b.N; i++ {
-//  				apdIterative(testCase.s)
-//  			}
-//  		})
-//  	}
-//  }
-
 var initial = []int{1, 2, 3, 4, 5, 6, 7, 8}
 var appending = []int{1, 2, 3, 4, 6}
 
