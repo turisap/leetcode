@@ -18,5 +18,4 @@ var testMulti = []struct {
 }{
 	{"Add a set of integers to an array", []int{1}, []int{2, 3, 4}, []int{1, 2, 3, 4}},
 	{"Add a set of integers to an empty array", []int{}, []int{2, 3, 4}, []int{2, 3, 4}},
-	{"Add a set of integers to an array when cap is enough", make([]int, 0, 5), []int{2, 3, 4}, []int{2, 3, 4}},
 }

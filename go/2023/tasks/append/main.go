@@ -1,7 +1,6 @@
 package main
 
 func appendCustom[T any](slice []T, args ...T) []T {
-	// if the length of the resulting slice does not exceed cap(slice)
 	curL := len(slice)
 	curC := cap(slice)
 	availableSlots := curC - curL
@@ -10,17 +9,18 @@ func appendCustom[T any](slice []T, args ...T) []T {
 	if availableSlots >= neededSlots {
 		c := len(slice)
 		k := 0
+		w := slice[:curC]
 		for k < len(args) {
-			slice[c] = args[k]
+			w[c] = args[k]
 			c++
 			k++
 		}
 
-		return slice
+		return w
 	}
 
 	l := neededSlots + curL
-	s := make([]T, l)
+	s := make([]T, l, l)
 
 	for i := 0; i < l; i++ {
 		if i < curL {
