@@ -28,14 +28,22 @@ import "testing"
        benchstat stat1 stat2
 */
 
+var input = "akaabakolokabaaka"
+
+func BenchmarkISPRecursiveUTF(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ispRecursiveUTF(input)
+	}
+}
+
 func BenchmarkISPRecursive(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		ispRecursive("akaabakolokabaaka")
+		ispRecursive(input)
 	}
 }
 
 func BenchmarkISPIterative(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		ispIterative("akaabakolokabaaka")
+		ispIterative(input)
 	}
 }
