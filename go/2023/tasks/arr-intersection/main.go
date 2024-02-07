@@ -21,15 +21,16 @@ func aitIterative(a, b []int) []int {
 	return res
 }
 
+// @COOL good improvement
 func aitImproved(a, b []int) []int {
-	set := map[int]bool{}
-	added := map[int]bool{}
 	rL := len(b)
 
 	if len(a) < len(b) {
 		rL = len(a)
 	}
 
+	set := make(map[int]bool, rL)
+	added := make(map[int]bool, rL)
 	res := make([]int, rL, rL)
 
 	for _, v := range a {
@@ -39,7 +40,6 @@ func aitImproved(a, b []int) []int {
 	c := 0
 	for _, v := range b {
 		if set[v] && !added[v] {
-			// @TODO index access
 			res[c] = v
 			added[v] = true
 			c++
