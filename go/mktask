@@ -48,27 +48,29 @@ create_files_func() {
         */
 
 
-        func Test${package_upper}RecursiveSubTest(t *testing.T) {
-        	for _, testCase := range testCases {
-        		t.Run(testCase.name, func(t *testing.T) {
-        			result := ${package_name}Recursive()
-        			if result != testCase.result {
-        				t.Errorf(\"${package_upper} %s produces %d, got %d\", testCase.s, testCase.result, result)
-        			}
-        		})
-        	}
-        }
+           func Test${package_upper}RecursiveSubTest(t *testing.T) {
+           	for _, testCase := range testCases {
+               tt := testCase
+           		t.Run(tt.name, func(t *testing.T) {
+           			result := ${package_name}Recursive()
+           			if result != tt.result {
+           				t.Errorf(\"${package_upper} %s produces %d, got %d\", tt.s, tt.result, result)
+           			}
+           		})
+           	}
+           }
 
-        func Test${package_upper}IterativeSubTest(t *testing.T) {
-        	for _, testCase := range testCases {
-        		t.Run(testCase.name, func(t *testing.T) {
-        			result := ${package_name}Iterative()
-        			if result != testCase.result {
-        				t.Errorf(\"${package_upper} %s produces %d, got %d\", testCase.s, testCase.result, result)
-        			}
-        		})
-        	}
-        }
+           func Test${package_upper}IterativeSubTest(t *testing.T) {
+           	for _, testCase := range testCases {
+               tt := testCase
+           		t.Run(tt.name, func(t *testing.T) {
+           			result := ${package_name}Iterative()
+           			if result != tt.result {
+           				t.Errorf(\"${package_upper} %s produces %d, got %d\", tt.s, tt.result, result)
+           			}
+           		})
+           	}
+           }
         "
 
     echo "$test_template" >> "$dir_name/${dir_name}_test.go" || return 1
