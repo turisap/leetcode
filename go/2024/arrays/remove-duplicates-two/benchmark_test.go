@@ -1,5 +1,7 @@
 package main
 
+import "testing"
+
 /*
    == 1st implementation ==
     1) go test -v -bench=rdwSwap  -run=XXX  -cpuprofile=cpu1.pprof
@@ -49,14 +51,14 @@ package main
 //  	}
 //  }
 
-//func BenchmarkrdwSwap(b *testing.B) {
-//	for i := 0; i < b.N; i++ {
-//		rdwSwap()
-//	}
-//}
-//
-//func BenchmarkRDWIterative(b *testing.B) {
-//	for i := 0; i < b.N; i++ {
-//		rdwIterative()
-//	}
-//}
+func BenchmarkRDWSwap(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		rdwSwap(testCases[3].s)
+	}
+}
+
+func BenchmarkRDWIterative(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		rdwTwo(testCases[3].s)
+	}
+}

@@ -27,13 +27,14 @@ func TestRDWSwapSubTest(t *testing.T) {
 	}
 }
 
-//func TestRDWIterativeSubTest(t *testing.T) {
-//	for _, testCase := range testCases {
-//		t.Run(testCase.name, func(t *testing.T) {
-//			result := rdwIterative()
-//			if result != testCase.result {
-//				t.Errorf("RDW %s produces %d, got %d", testCase.s, testCase.result, result)
-//			}
-//		})
-//	}
-//}
+func TestRDWIterativeSubTest(t *testing.T) {
+	for _, testCase := range testCases {
+		tt := testCase
+		t.Run(testCase.name, func(t *testing.T) {
+			result := rdwTwo(tt.s)
+			if result != testCase.result {
+				t.Errorf("RDW %v produces %d, got %d", tt.s, tt.result, result)
+			}
+		})
+	}
+}
