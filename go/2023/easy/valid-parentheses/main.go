@@ -7,7 +7,7 @@ var openMap = map[rune]rune{
 }
 
 func VPSL(s string) (valid bool) {
-	//stack := []rune{}
+	//reverse := []rune{}
 	stack := make([]rune, len(s))
 
 	for _, ch := range s {
