@@ -1,4 +1,4 @@
-package optimize
+package main
 
 var testCases = []struct {
 	name   string

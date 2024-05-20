@@ -1,33 +1,47 @@
 #!/bin/bash
 
-# Check if an argument is provided
-if [ -z "$1" ]; then
-  echo "Usage: $0 <number_of_integers>"
-  exit 1
+# Check if the number of arguments is exactly 1
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <N>"
+    exit 1
 fi
 
-# Number of random integers to generate
+# Check if the argument is a positive integer
+if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+    echo "Error: N must be a positive integer"
+    exit 1
+fi
+
+# Number of random entries to generate
 N=$1
 
-# Check if N is a positive integer
-if ! [[ "$N" =~ ^[0-9]+$ ]]; then
-  echo "Error: Argument must be a positive integer."
-  exit 1
-fi
-
 # Output file
-OUTPUT_FILE="measurements.txt"
+output_file="measurements.txt"
 
-# Function to generate a random integer between -60 and 60
-generate_random_integer() {
-  echo $(( RANDOM % 121 - 60 ))
+# Clear the file if it exists
+> "$output_file"
+
+# Function to generate a random 32-character string
+generate_random_string() {
+    local chars='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    local random_string=""
+    for i in {1..32}; do
+        random_char=${chars:RANDOM%${#chars}:1}
+        random_string+=$random_char
+    done
+    echo "$random_string"
 }
 
-# Generate N random integers and save to the file
-> "$OUTPUT_FILE" # Truncate the file if it exists, or create it if it doesn't
-for (( i=0; i<N; i++ ))
-do
-  generate_random_integer >> "$OUTPUT_FILE"
+# Generate N random entries and save them to the file
+for ((i=0; i<N; i++)); do
+    # Generate a random 32-character string
+    random_string=$(generate_random_string)
+
+    # Generate a random float with one decimal place
+    random_float=$(printf "%.1f\n" "$(echo "scale=1; $((RANDOM % 1201 - 600))/10" | bc)")
+
+    # Combine and write to the file
+    echo "$random_string: $random_float" >> "$output_file"
 done
 
-echo "Generated $N random integers between -60 and 60 and saved them to $OUTPUT_FILE."
+echo "Generated $N random entries in $output_file"

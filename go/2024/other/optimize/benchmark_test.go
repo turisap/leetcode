@@ -1,4 +1,4 @@
-package optimize
+package main
 
 /*
    == 1st implementation ==
