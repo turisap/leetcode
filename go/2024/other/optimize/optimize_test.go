@@ -34,7 +34,7 @@ var r = Result{
 	fK:      "-146.16",
 }
 
-func TestOPTRecursiveSubTest(t *testing.T) {
+func TestOPTSolution1(t *testing.T) {
 	f, err := getMeasurementsFile()
 	if err != nil {
 		log.Fatal(err)
@@ -53,13 +53,21 @@ func TestOPTRecursiveSubTest(t *testing.T) {
 	})
 }
 
-//func TestOPTIterativeSubTest(t *testing.T) {
-//	for _, testCase := range testCases {
-//		t.Run(testCase.name, func(t *testing.T) {
-//			result := optIterative()
-//			if result != testCase.result {
-//				t.Errorf("OPT %s produces %d, got %d", testCase.s, testCase.result, result)
-//			}
-//		})
-//	}
-//}
+func TestOPTSolution2(t *testing.T) {
+	f, err := getMeasurementsFile()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	testCase := TestCase{
+		name:   "basic test",
+		input:  f,
+		result: r,
+	}
+
+	t.Run(testCase.name, func(t *testing.T) {
+		result := s2(testCase.input)
+		assert.Equal(t, testCase.result, result)
+	})
+}

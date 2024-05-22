@@ -15,7 +15,7 @@ import (
 @TODO Manual inline
 @TODO For range to for
 @TODO Boundary checks
-@TODO Writing global writing local
+Writing global writing local
 @TODO No defer
 @TODO use ints instead of floats
 @TODO Byte slice map key to map assignment
@@ -30,27 +30,12 @@ import (
 @TODO Use index tables instead of maps which key types have only a small set of possible
 @TODO values
 @TODO method on an interface and on a concrete struct
-*/
-
-/* What is needed?
-DONE a map
-DONE  a value struct
-DONE a slice
-DONE some functions to inline
 @TODO defer (separately)
-DONE a global (some kind of average)
-DONE a for range to replace with for i
-DONE another map cycle for access
-DONE another map for keys (maybe a part of them)
-DONE some function which accepts interfaces
 */
 
-var sum float64 = 0.0
-var maxTemp float64 = 0.0
-var minTemp float64 = 0.0
-var fKoeff = 0.0
+// @TODO all optimizations for utils.go file
 
-func s1(f *os.File) Result {
+func s2(f *os.File) Result {
 	scanner := bufio.NewScanner(f)
 	fMap := map[string]Fahrenheit{}
 	cMap := map[string]Celsius{}
@@ -99,31 +84,38 @@ func s1(f *os.File) Result {
 
 	}
 
+	var (
+		minTempLocal = 0.0
+		maxTempLocal = 0.0
+		fKoeffLocal  = 0.0
+		sumLocal     = 0.0
+	)
+
 	// @TODO replace with for i
 	for i, v := range targetSources {
 		curr := cMap[v].temp
 
-		if curr < minTemp {
+		if curr < minTempLocal {
 			// @TODO global to local
-			minTemp = curr
+			minTempLocal = curr
 		}
 
-		if curr > maxTemp {
+		if curr > maxTempLocal {
 			// @TODO global to local
-			maxTemp = curr
+			maxTempLocal = curr
 		}
 
 		if i%TARGET_KOEF_IDX == 0 {
-			fKoeff = calcFloatSth(curr) // complex float manipulations
+			fKoeffLocal = calcFloatSth(curr) // complex float manipulations
 		}
 
-		sum += curr
+		sumLocal += curr
 	}
 
-	avgStr := fmt.Sprintf("%.2f", sum/float64((len(targetSources))))
-	minTStr := fmt.Sprintf("%.2f", minTemp)
-	maxTStr := fmt.Sprintf("%.2f", maxTemp)
-	fKoefStr := fmt.Sprintf("%.2f", fKoeff)
+	avgStr := fmt.Sprintf("%.2f", sumLocal/float64((len(targetSources))))
+	minTStr := fmt.Sprintf("%.2f", minTempLocal)
+	maxTStr := fmt.Sprintf("%.2f", maxTempLocal)
+	fKoefStr := fmt.Sprintf("%.2f", fKoeffLocal)
 
 	return Result{
 		avg:     avgStr,
