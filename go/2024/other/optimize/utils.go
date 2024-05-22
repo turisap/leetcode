@@ -11,10 +11,10 @@ type Measure interface {
 
 type Celsius struct {
 	temp      float64
-	time      time.Time
 	active    bool
-	source    string
 	footprint float64
+	time      time.Time
+	source    string
 }
 
 func (c Celsius) getTemperature() float64 {
@@ -27,10 +27,10 @@ func (c Celsius) getSource() string {
 
 type Fahrenheit struct {
 	temp      float64
-	time      time.Time
 	active    bool
-	source    string
 	footprint float64
+	time      time.Time
+	source    string
 }
 
 func (f Fahrenheit) getTemperature() float64 {
