@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"time"
+	"unsafe"
 )
 
 func main() {
@@ -14,7 +17,14 @@ func main() {
 
 	defer f.Close()
 
-	s4(f)
+	b := true
+	t := time.Now()
+	var fl float64 = 1.4
+	str := "dwE4xfGuLfccUy3RCM7DBFkQtfub7pgD"
+	fmt.Println(unsafe.Sizeof(b))
+	fmt.Println(unsafe.Sizeof(t))
+	fmt.Println(unsafe.Sizeof(fl))
+	fmt.Println(unsafe.Sizeof(str))
 }
 
 func getMeasurementsFile() (*os.File, error) {

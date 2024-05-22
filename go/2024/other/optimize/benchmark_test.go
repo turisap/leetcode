@@ -109,3 +109,16 @@ func BenchmarkOPTSolution6(b *testing.B) {
 		_ = s6(f)
 	}
 }
+
+func BenchmarkOPTSolution7(b *testing.B) {
+	f, err := getMeasurementsFile()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = s7(f)
+	}
+}
