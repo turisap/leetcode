@@ -48,7 +48,6 @@ type Result struct {
 	fK      string
 }
 
-// @TODO manual inline
 func calcFloatSth(f float64) float64 {
 	a := f + 3.4
 	b := f - 20.32
@@ -82,7 +81,6 @@ func calcFootprint(f float64) float64 {
 	return a / 5
 }
 
-// @TODO inline
 func isTargetSource(c int) bool {
 	return c%2 == 0
 }

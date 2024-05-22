@@ -12,7 +12,7 @@ import (
 Byte slice map key to my assignment
 @TODO Stack allocation,
 @TODO memory ballast
-@TODO Manual inline
+Manual inline
 For range to for
 @TODO Boundary checks
 Writing global writing local
@@ -28,14 +28,13 @@ Map  pointers instead of values
 @TODO Avoid unnecessary pointer dereferences in a loop
 @TODO Avoid accessing fields of a struct in a loop though pointers to the struct
 @TODO Use index tables instead of maps which key types have only a small set of possible
-@TODO values
-@TODO method on an interface and on a concrete struct
+method on an interface and on a concrete struct
 @TODO defer (separately)
 */
 
 // @TODO all optimizations for utils.go file
 
-func s5(f *os.File) Result {
+func s6(f *os.File) Result {
 	scanner := bufio.NewScanner(f)
 	fMap := map[[32]byte]*Fahrenheit{}
 	cMap := map[[32]byte]*Celsius{}
@@ -57,8 +56,7 @@ func s5(f *os.File) Result {
 			continue
 		}
 
-		// go:noinline
-		if isTargetSource(c) {
+		if c%2 == 0 {
 			targetSources = append(targetSources, randomStringBytes)
 		}
 
@@ -73,15 +71,15 @@ func s5(f *os.File) Result {
 
 	// map to celsius @TODO (pre-alloc map)
 	for k, v := range fMap {
-		m := fToCelsius(v)
-		c, ok := m.(Celsius)
+		e := v.temp * 2.0
+		l := v.temp / 3.87
+		a := 7*e + 3*l
 
-		if !ok {
-			continue
+		cMap[k] = &Celsius{
+			temp:      (v.temp - 32) * 0.55,
+			source:    v.source,
+			footprint: a,
 		}
-
-		cMap[k] = &c
-
 	}
 
 	var (
@@ -104,8 +102,10 @@ func s5(f *os.File) Result {
 		}
 
 		if i%TARGET_KOEF_IDX == 0 {
-			// go:noinline
-			fKoeffLocal = calcFloatSth(curr) // complex float manipulations
+			a := curr + 3.4
+			b := curr - 20.32
+			k := curr * 3.1 / 4.1
+			fKoeffLocal = 3.0*a + 5.2*b - k*2.2 // complex float manipulations
 		}
 
 		sumLocal += curr
