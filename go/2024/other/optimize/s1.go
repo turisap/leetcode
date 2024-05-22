@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"math/rand"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -89,10 +89,10 @@ var minTemp float64 = 0.0
 var fKoeff = 0.0
 
 type Result struct {
-	avg     float64
-	minTemp float64
-	maxTemp float64
-	fK      float64
+	avg     string
+	minTemp string
+	maxTemp string
+	fK      string
 }
 
 func s1(f *os.File) Result {
@@ -102,6 +102,7 @@ func s1(f *os.File) Result {
 	// @TODO pre-alloc
 	targetSources := []string{}
 
+	c := 0
 	for scanner.Scan() {
 		ln := scanner.Text()
 		parts := strings.Split(ln, ": ")
@@ -117,7 +118,7 @@ func s1(f *os.File) Result {
 			continue
 		}
 
-		if isTargetSource(source) {
+		if isTargetSource(c) {
 			targetSources = append(targetSources, source)
 		}
 
@@ -127,6 +128,7 @@ func s1(f *os.File) Result {
 			active: false,
 			source: source,
 		}
+		c++
 	}
 
 	// map to celsius @TODO (pre-alloc map)
@@ -167,11 +169,16 @@ func s1(f *os.File) Result {
 		sum += curr
 	}
 
+	avgStr := fmt.Sprintf("%.2f", sum/float64((len(targetSources))))
+	minTStr := fmt.Sprintf("%.2f", minTemp)
+	maxTStr := fmt.Sprintf("%.2f", maxTemp)
+	fKoefStr := fmt.Sprintf("%.2f", fKoeff)
+
 	return Result{
-		avg:     sum / float64((len(targetSources))),
-		minTemp: minTemp,
-		maxTemp: maxTemp,
-		fK:      fKoeff,
+		avg:     avgStr,
+		minTemp: minTStr,
+		maxTemp: maxTStr,
+		fK:      fKoefStr,
 	}
 }
 
@@ -210,6 +217,6 @@ func calcFootprint(f float64) float64 {
 }
 
 // @TODO inline
-func isTargetSource(s string) bool {
-	return rand.Intn(2) == 1
+func isTargetSource(c int) bool {
+	return c%2 == 0
 }
