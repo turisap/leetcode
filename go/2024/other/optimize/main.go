@@ -14,7 +14,7 @@ func main() {
 
 	defer f.Close()
 
-	s1(f)
+	s4(f)
 }
 
 func getMeasurementsFile() (*os.File, error) {

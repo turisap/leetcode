@@ -90,3 +90,22 @@ func TestOPTSolution3(t *testing.T) {
 		assert.Equal(t, testCase.result, result)
 	})
 }
+
+func TestOPTSolution4(t *testing.T) {
+	f, err := getMeasurementsFile()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	testCase := TestCase{
+		name:   "basic test",
+		input:  f,
+		result: r,
+	}
+
+	t.Run(testCase.name, func(t *testing.T) {
+		result := s4(testCase.input)
+		assert.Equal(t, testCase.result, result)
+	})
+}
