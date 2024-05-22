@@ -144,10 +144,6 @@ func s1(f *os.File) Result {
 
 	}
 
-	// @TODO for range keys access temperatures
-	// calculate avg, min, max
-	//
-
 	// @TODO replace with for i
 	for i, v := range targetSources {
 		curr := cMap[v].temp

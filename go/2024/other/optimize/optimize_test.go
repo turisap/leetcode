@@ -19,13 +19,13 @@ type TestCase struct {
 
 1a)Test Iterative
 
-	go test -run TestOPTIterativeSubTest
- 2. check coverage
-    go test -coverprofile=coverage.out
- 3. check coverage by function:
-    go tool cover -func=coverage.out
- 4. check coverage:
-    go tool cover -html=coverage.out
+		go test -run TestOPTIterativeSubTest
+	 2. check coverage
+	    go test -coverprofile=coverage.out
+	 3. check coverage by function:
+	    go tool cover -func=coverage.out
+	 4. check coverage:
+	    go tool cover -html=coverage.out
 */
 var r = Result{
 	avg:     "-17.87",
@@ -35,7 +35,7 @@ var r = Result{
 }
 
 func TestOPTRecursiveSubTest(t *testing.T) {
-	f, err := os.Open("./input.txt")
+	f, err := getMeasurementsFile()
 	if err != nil {
 		log.Fatal(err)
 	}

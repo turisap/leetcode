@@ -1,5 +1,10 @@
 package main
 
+import (
+	"log"
+	"testing"
+)
+
 /*
    == 1st implementation ==
     1) go test -v -bench=OPTRecursive  -run=XXX  -cpuprofile=cpu1.pprof
@@ -27,36 +32,15 @@ package main
        benchstat stat1 stat2
 */
 
-//  func BenchmarkSubOPTRegWith(b *testing.B) {
-//  	for _, testCase := range testCases {
-//  		testCase := testCase
-//  		b.Run(testCase.name, func(b *testing.B) {
-//  			for i := 0; i < b.N; i++ {
-//  				optRecursive(testCase.s)
-//  			}
-//  		})
-//  	}
-//  }
+func BenchmarkOPTSolution1(b *testing.B) {
+	f, err := getMeasurementsFile()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
 
-//  func BenchmarkSubOPTIterativeWith(b *testing.B) {
-//  	for _, testCase := range testCases {
-//  		testCase := testCase
-//  		b.Run(testCase.name, func(b *testing.B) {
-//  			for i := 0; i < b.N; i++ {
-//  				optIterative(testCase.s)
-//  			}
-//  		})
-//  	}
-//  }
-
-//func BenchmarkOPTRecursive(b *testing.B) {
-//	for i := 0; i < b.N; i++ {
-//		optRecursive()
-//	}
-//}
-//
-//func BenchmarkOPTIterative(b *testing.B) {
-//	for i := 0; i < b.N; i++ {
-//		optIterative()
-//	}
-//}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = s1(f)
+	}
+}
