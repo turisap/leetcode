@@ -38,7 +38,7 @@ DONE a map
 DONE  a value struct
 DONE a slice
 DONE some functions to inline
-defers
+@TODO defer (separately)
 DONE a global (some kind of average)
 DONE a for range to replace with for i
 DONE another map cycle for access
@@ -88,7 +88,14 @@ var maxTemp float64 = 0.0
 var minTemp float64 = 0.0
 var fKoeff = 0.0
 
-func s1(f *os.File) (float64, float64, float64, float64) {
+type Result struct {
+	avg     float64
+	minTemp float64
+	maxTemp float64
+	fK      float64
+}
+
+func s1(f *os.File) Result {
 	scanner := bufio.NewScanner(f)
 	fMap := map[string]Fahrenheit{}
 	cMap := map[string]Celsius{}
@@ -160,7 +167,12 @@ func s1(f *os.File) (float64, float64, float64, float64) {
 		sum += curr
 	}
 
-	return sum / float64(len(targetSources)), minTemp, maxTemp, fKoeff
+	return Result{
+		avg:     sum / float64((len(targetSources))),
+		minTemp: minTemp,
+		maxTemp: maxTemp,
+		fK:      fKoeff,
+	}
 }
 
 // @TODO manual inline
@@ -183,7 +195,7 @@ func fToCelsius(m Measure) Measure {
 }
 
 // @TODO to inline
-// @TODO float to ints
+// @TODO float to int s
 func degreesFtoCelsius(f float64) float64 {
 	return (f - 32) * 0.55
 }

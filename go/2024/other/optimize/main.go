@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	f, err := os.Open("./measurements.txt")
+	f, err := os.Open("./input.txt")
 
 	if err != nil {
 		log.Fatal(err)
