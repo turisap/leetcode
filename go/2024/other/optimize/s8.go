@@ -35,12 +35,14 @@ map prealloc
 slice prealloc
 */
 
+const LENGTH = 50000
+
 func s8(f *os.File) Result {
 	scanner := bufio.NewScanner(f)
 	fMap := map[[32]byte]*FahrenheitReorder{}
 	cMap := map[[32]byte]*CelsiusReorder{}
-	targetSources := [][32]byte{}
-	//targetSources := make([][32]byte, 50000)
+	//targetSources := [][32]byte{}
+	targetSources := make([][32]byte, 0, LENGTH)
 	c := 0
 
 	const separatorIndex = 32

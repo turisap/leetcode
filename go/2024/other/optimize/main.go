@@ -2,11 +2,10 @@ package main
 
 import (
 	"log"
-	"os"
 )
 
 func main() {
-	f, err := os.Open("./input.txt")
+	f, err := getMeasurementsFile()
 
 	if err != nil {
 		log.Fatal(err)
@@ -46,13 +45,4 @@ func main() {
 	//fmt.Println(unsafe.Sizeof(CelsiusReorder{}))
 	//fmt.Println("===========")
 	_ = s8(f)
-}
-
-func getMeasurementsFile() (*os.File, error) {
-	f, err := os.Open("./input.txt")
-	if err != nil {
-		return nil, err
-	}
-
-	return f, nil
 }

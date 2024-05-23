@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"os"
+	"time"
+)
 
 const TARGET_KOEF_IDX = 17
 
@@ -83,4 +86,13 @@ func calcFootprint(f float64) float64 {
 
 func isTargetSource(c int) bool {
 	return c%2 == 0
+}
+
+func getMeasurementsFile() (*os.File, error) {
+	f, err := os.Open("./input.txt")
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
 }
