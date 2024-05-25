@@ -39,14 +39,29 @@ map prealloc
 slice prealloc
 */
 
-const LENGTH = 50000
+type CelsiusInt struct {
+	time      time.Time
+	source    string
+	temp      int
+	footprint int
+	active    bool
+}
 
-func s8(f *os.File) Result {
+type FahrenheitInt struct {
+	time      time.Time
+	source    string
+	temp      int
+	footprint int
+	active    bool
+}
+
+const MULT_FACTOR = 1000
+
+func s9(f *os.File) Result {
 	scanner := bufio.NewScanner(f)
-	fMap := map[[32]byte]*FahrenheitReorder{}
-	cMap := map[[32]byte]*CelsiusReorder{}
-	//targetSources := [][32]byte{}
-	targetSources := make([][32]byte, 0, LENGTH)
+	fMap := map[[32]byte]*FahrenheitInt{}
+	cMap := map[[32]byte]*CelsiusInt{}
+	targetSources := [][32]byte{}
 	c := 0
 
 	const separatorIndex = 32
@@ -54,10 +69,11 @@ func s8(f *os.File) Result {
 		lineBytes := scanner.Bytes()
 
 		var randomStringBytes [separatorIndex]byte
-		copy(randomStringBytes[:], lineBytes[:separatorIndex])
+		copy(randomStringBytes[:], lineBytes[:32])
 		randomFloatPart := lineBytes[separatorIndex+2:]
 
 		temperature, err := strconv.ParseFloat(string(randomFloatPart), 32)
+		tempInt := int(temperature * MULT_FACTOR)
 
 		if err != nil {
 			continue
@@ -67,8 +83,8 @@ func s8(f *os.File) Result {
 			targetSources = append(targetSources, randomStringBytes)
 		}
 
-		fMap[randomStringBytes] = &FahrenheitReorder{
-			temp:   temperature,
+		fMap[randomStringBytes] = &FahrenheitInt{
+			temp:   tempInt,
 			time:   time.Now(),
 			active: false,
 			source: string(randomStringBytes[:]),
@@ -76,34 +92,31 @@ func s8(f *os.File) Result {
 		c++
 	}
 
-	// map to CelsiusReorder
+	k1 := int(2.0 * MULT_FACTOR)
+	k2 := int(3.87 * MULT_FACTOR)
+	k3 := int(0.55 * MULT_FACTOR)
 	for k, v := range fMap {
-		e := v.temp * 2.0
-		l := v.temp / 3.87
+		e := v.temp * k1
+		l := v.temp / k2
 		a := 7*e + 3*l
 
-		cMap[k] = &CelsiusReorder{
-			temp:      (v.temp - 32) * 0.55,
+		cMap[k] = &CelsiusInt{
+			temp:      (v.temp - 32) * k3,
 			source:    v.source,
 			footprint: a,
 		}
 	}
 
 	var (
-		minTempLocal = 0.0
-		maxTempLocal = 0.0
-		fKoeffLocal  = 0.0
-		sumLocal     = 0.0
+		minTempLocal = 0
+		maxTempLocal = 0
+		fKoeffLocal  = 0
+		sumLocal     = 0
 	)
 
 	for i := 0; i < len(targetSources); i++ {
 		s := targetSources[i]
-		m := cMap[s]
-
-		if m == nil {
-			break
-		}
-		curr := m.temp
+		curr := cMap[s].temp
 
 		if curr < minTempLocal {
 			minTempLocal = curr
@@ -113,20 +126,26 @@ func s8(f *os.File) Result {
 			maxTempLocal = curr
 		}
 
+		k1 := int(3.4 * MULT_FACTOR)
+		k2 := int(20.32 * MULT_FACTOR)
+		k3 := int(3.1 * MULT_FACTOR)
+		k4 := int(4.1 * MULT_FACTOR)
+		k5 := int(5.2 * MULT_FACTOR)
+		k6 := int(2.2 * MULT_FACTOR)
 		if i%TARGET_KOEF_IDX == 0 {
-			a := curr + 3.4
-			b := curr - 20.32
-			k := curr * 3.1 / 4.1
-			fKoeffLocal = 3.0*a + 5.2*b - k*2.2 // complex float manipulations
+			a := curr + k1
+			b := curr - k2
+			k := curr * k3 / k4
+			fKoeffLocal = 3*a + k5*b - k*k6 // complex float manipulations
 		}
 
 		sumLocal += curr
 	}
 
-	avgStr := fmt.Sprintf("%.2f", sumLocal/float64((len(targetSources))))
-	minTStr := fmt.Sprintf("%.2f", minTempLocal)
-	maxTStr := fmt.Sprintf("%.2f", maxTempLocal)
-	fKoefStr := fmt.Sprintf("%.2f", fKoeffLocal)
+	avgStr := fmt.Sprintf("%.2f", (float64(sumLocal)/float64(len(targetSources)))/MULT_FACTOR)
+	minTStr := fmt.Sprintf("%.2f", float64(minTempLocal/MULT_FACTOR))
+	maxTStr := fmt.Sprintf("%.2f", float64(maxTempLocal/MULT_FACTOR))
+	fKoefStr := fmt.Sprintf("%.2f", float64(fKoeffLocal/MULT_FACTOR))
 
 	return Result{
 		avg:     avgStr,
