@@ -123,18 +123,18 @@ func BenchmarkOPTSolution7(b *testing.B) {
 	}
 }
 
-//func BenchmarkOPTSolution8(b *testing.B) {
-//	f, err := getMeasurementsFile()
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//	defer f.Close()
-//
-//	b.ResetTimer()
-//	for i := 0; i < b.N; i++ {
-//		_ = s8(f)
-//	}
-//}
+func BenchmarkOPTSolution8(b *testing.B) {
+	f, err := getMeasurementsFile()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = s8(f)
+	}
+}
 
 func BenchmarkOPTSolution9(b *testing.B) {
 	f, err := getMeasurementsFile()

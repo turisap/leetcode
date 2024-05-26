@@ -42,10 +42,11 @@ slice prealloc
 const LENGTH = 50000
 
 func s8(f *os.File) Result {
+	//var a [LENGTH][32]byte
 	scanner := bufio.NewScanner(f)
 	fMap := map[[32]byte]*FahrenheitReorder{}
 	cMap := map[[32]byte]*CelsiusReorder{}
-	//targetSources := [][32]byte{}
+	//targetSources := a[0:0]
 	targetSources := make([][32]byte, 0, LENGTH)
 	c := 0
 
@@ -76,7 +77,7 @@ func s8(f *os.File) Result {
 		c++
 	}
 
-	// map to CelsiusReorder
+	//map to CelsiusReorder
 	for k, v := range fMap {
 		e := v.temp * 2.0
 		l := v.temp / 3.87

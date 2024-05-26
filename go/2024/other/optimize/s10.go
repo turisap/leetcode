@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"time"
@@ -22,14 +21,14 @@ struct sorting fields
 preallocate map (or GC ballast)
 use ints instead of floats
 Boundary checks
-@TODO Allocate the backing array of a slice on stack even if its size is larger than or equal to 64K (but not larger than 10M)
-@TODO Avoid unnecessary pointer dereferences in a loop
-@TODO Avoid accessing fields of a struct in a loop though pointers to the struct
-@TODO Use index tables instead of maps which key types have only a small set of possible
+ Allocate the backing array of a slice on stack even if its size is larger than or equal to 64K (but not larger than 10M)
+Avoid unnecessary pointer dereferences in a loop
+Use index tables instead of maps which key types have only a small set of possible
 */
 
 /*
 outside of this
+Avoid accessing fields of a struct in a loop though pointers to the struct
 method on an interface and on a concrete struct
 Stack allocation for recursive functions
 byte arrays map keys
@@ -132,16 +131,4 @@ func s10(f *os.File) Result {
 		maxTemp: maxTStr,
 		fK:      fKoefStr,
 	}
-}
-
-func main() {
-	f, err := getMeasurementsFile()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer f.Close()
-
-	s10(f)
 }

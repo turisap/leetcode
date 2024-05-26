@@ -85,7 +85,7 @@ func s7(f *os.File) Result {
 		c++
 	}
 
-	// map to CelsiusReorder @TODO (pre-alloc map)
+	//map to CelsiusReorder @TODO (pre-alloc map)
 	for k, v := range fMap {
 		e := v.temp * 2.0
 		l := v.temp / 3.87
