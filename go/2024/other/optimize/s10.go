@@ -21,7 +21,7 @@ struct sorting fields
 preallocate map (or GC ballast)
 use ints instead of floats
 Boundary checks
- Allocate the backing array of a slice on stack even if its size is larger than or equal to 64K (but not larger than 10M)
+Allocate the backing array of a slice on stack even if its size is larger than or equal to 64K (but not larger than 10M)
 Avoid unnecessary pointer dereferences in a loop
 Use index tables instead of maps which key types have only a small set of possible
 */
