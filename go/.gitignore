@@ -7,3 +7,4 @@ coverage.out
 stat*[0-9]
 *.test
 *.pprof
+*.csv
