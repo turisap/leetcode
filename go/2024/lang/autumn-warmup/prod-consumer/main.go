@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"os/signal"
-	"syscall"
+	"sync"
 	"time"
 )
 
@@ -15,26 +14,27 @@ const C = 5
 
 func main() {
 	dataChan := make(chan int)
-	done := make(chan os.Signal, 1)
-	signal.Notify(done, syscall.SIGTERM)
+	done := make(DoneCh)
+	var wg sync.WaitGroup
 	defer func() {
 		fmt.Println("exit main")
 	}()
 
 	for v := range P {
-		go Producer(dataChan, done, v)
+		wg.Add(1)
+		go Producer(dataChan, &wg, done, v)
 	}
 
 	for v := range C {
 		go Consume(dataChan, v)
 	}
 
-	signal.Notify(done)
-	select {
-	case <-done:
-		time.Sleep(time.Second)
-		return
-	}
+	time.Sleep(time.Second * 2)
+	close(done)
+
+	wg.Wait()
+	close(dataChan)
+	time.Sleep(time.Second * 2)
 }
 
 func Consume(ch <-chan int, i int) {
@@ -46,12 +46,14 @@ func Consume(ch <-chan int, i int) {
 	}
 }
 
-func Producer(ch chan<- int, done DoneCh, i int) {
-	ticker := time.NewTicker(time.Millisecond * 100)
-	var c int
+func Producer(ch chan<- int, wg *sync.WaitGroup, done DoneCh, i int) {
+	defer wg.Done()
 	defer func() {
 		fmt.Println("exit producer", i)
 	}()
+
+	ticker := time.NewTicker(time.Millisecond * 100)
+	var c int
 
 	for {
 		select {
