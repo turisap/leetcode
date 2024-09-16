@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"os"
 	"strconv"
 )
 
@@ -68,14 +67,14 @@ func synchronousPipeline(input *csv.Reader) {
 	}
 }
 
-func main() {
-	f, err := os.Open("./generated_data_1000.csv")
-	reader := csv.NewReader(f)
-
-	if err != nil {
-		panic(err)
-	}
-
-	//synchronousPipeline(reader)
-	asynchronousPipeline(reader)
-}
+//func main() {
+//	f, err := os.Open("./generated_data_1000.csv")
+//	reader := csv.NewReader(f)
+//
+//	if err != nil {
+//		panic(err)
+//	}
+//
+//	//synchronousPipeline(reader)
+//	asynchronousPipeline(reader)
+//}
