@@ -35,3 +35,23 @@ func majorityNaivePreallocate(nums []int) int {
 
 	return mEl
 }
+
+func majorityMoor(nums []int) int {
+	mEl := nums[0]
+	mC := 1
+
+	for _, v := range nums {
+		if mEl == v {
+			mC++
+		} else {
+			mC--
+		}
+
+		if mC == 0 {
+			mEl = v
+			mC = 1
+		}
+	}
+
+	return mEl
+}

@@ -16,3 +16,9 @@ func BenchmarkMajorityNaivePreallocate(b *testing.B) {
 		res = majorityNaivePreallocate(testInput)
 	}
 }
+
+func BenchmarkMajorityMajorityMoor(b *testing.B) {
+	for _ = range b.N {
+		res = majorityMoor(testInput)
+	}
+}
