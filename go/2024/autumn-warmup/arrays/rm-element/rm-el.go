@@ -1,6 +1,8 @@
 package rm_element
 
-import "slices"
+import (
+	"slices"
+)
 
 func removeElementNaive(nums []int, val int) int {
 	c := 0
@@ -9,8 +11,7 @@ func removeElementNaive(nums []int, val int) int {
 		curr := nums[i]
 
 		if curr == val {
-			nums = slices.Delete(nums, i, i)
-			i++
+			nums = slices.Delete(nums, i, i+1)
 			continue
 		}
 
@@ -19,4 +20,17 @@ func removeElementNaive(nums []int, val int) int {
 	}
 
 	return c
+}
+
+func removeElementsPointers(nums []int, val int) int {
+	j := 0
+
+	for i := 0; i < len(nums); i++ {
+		if nums[i] != val {
+			nums[i], nums[j] = nums[j], nums[i]
+			j++
+		}
+	}
+
+	return j
 }
