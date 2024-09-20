@@ -1,7 +1,6 @@
 package rm_duplicates
 
 import (
-	"fmt"
 	"slices"
 )
 
@@ -19,7 +18,6 @@ func removeDuplicatesNaive(nums []int) int {
 
 		c++
 		curr := nums[i]
-		fmt.Println(i, curr, currUnique, nums)
 		if curr == currUnique {
 			slices.Delete(nums, i, i+1)
 			continue
@@ -33,8 +31,19 @@ func removeDuplicatesNaive(nums []int) int {
 	return uniqueCount
 }
 
-/*
-0, 0, 1, 1, 1, 2, 2, 3, 3, 4
-0, 1, 1, 1, 2, 2, 3, 3, 4, 0
+func removeDuplicatesTwoPointers(nums []int) int {
+	j := 0
+	for i := 1; i < len(nums); i++ {
+		if nums[i] != nums[j] {
+			j++
+			nums[i], nums[j] = nums[j], nums[i]
+		}
+	}
 
+	return j + 1
+}
+
+/*
+	0, 0, 1, 1, 1, 2, 2, 3, 3, 4
+	0, 0, 1, 1, 1, 2, 2, 3, 3, 4
 */
