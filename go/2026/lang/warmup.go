@@ -1,6 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"runtime"
+	"strconv"
+	"sync"
+	"time"
+)
 
 type MyErr struct{}
 
@@ -101,7 +107,7 @@ func main7() {
 	}
 }
 
-func main() {
+func main8() {
 	const (
 		a = iota
 		b
@@ -112,4 +118,87 @@ func main() {
 		e = iota
 	)
 	fmt.Println(a, b, c, d, e)
+}
+
+func main9() {
+	var a, b interface{} = []int{1}, []int{1}
+	fmt.Println(a == b)
+}
+
+func main10() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("Recovered from panic:", err)
+		}
+	}()
+
+	panic("boom")
+}
+
+func main11() {
+	e := work()
+	fmt.Println(e)
+}
+
+func work() (err error) {
+	if true {
+		_, err := strconv.Atoi("x")
+		if err != nil {
+			return err // does not compile
+			// return err - fix
+		}
+	}
+	return
+}
+
+func main12() {
+	ch := make(chan int)
+	var wg = sync.WaitGroup{}
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		ch <- 1
+	}()
+	fmt.Println(<-ch)
+	wg.Wait()
+}
+
+func main13() {
+	ssec()
+}
+
+func ssec() {
+	ch := make(chan int)
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		for v := range ch {
+			fmt.Println(v)
+		}
+		wg.Done()
+	}()
+	for i := 0; i < 3; i++ {
+		// ii := i
+		// go func() { ch <- ii }()
+		ch <- i
+	}
+	close(ch)
+
+	wg.Wait()
+}
+
+func first() int {
+	ch := make(chan int) // unbuffered
+	for i := 0; i < 3; i++ {
+		go func() { ch <- i }() // 3 goroutines, each tries to send
+	}
+	return <-ch // receives exactly ONE value
+}
+
+func main() {
+	fmt.Println(runtime.NumGoroutine()) // 1
+	first()
+	time.Sleep(100 * time.Millisecond)  // let goroutines settle
+	fmt.Println(runtime.NumGoroutine()) // 3  <- 2 leaked
 }
