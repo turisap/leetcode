@@ -196,9 +196,31 @@ func first() int {
 	return <-ch // receives exactly ONE value
 }
 
-func main() {
+func main14() {
 	fmt.Println(runtime.NumGoroutine()) // 1
 	first()
 	time.Sleep(100 * time.Millisecond)  // let goroutines settle
 	fmt.Println(runtime.NumGoroutine()) // 3  <- 2 leaked
+}
+
+func run(wg *sync.WaitGroup, id int) {
+	fmt.Println(id)
+}
+
+func main15() {
+	var wg sync.WaitGroup
+	for i := 0; i < 3; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			run(&wg, i)
+		}()
+	}
+	wg.Wait()
+}
+
+func main16() {
+	var n map[string]int
+	fmt.Println(n["k"]) // ?
+	n["k"] = 1
 }
