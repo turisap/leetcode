@@ -224,3 +224,48 @@ func main16() {
 	fmt.Println(n["k"]) // ?
 	n["k"] = 1
 }
+
+func main17() {
+	var fns []func()
+	for i := 0; i < 3; i++ {
+		ii := i
+		fns = append(fns, func() { fmt.Print(ii) })
+	}
+	for _, f := range fns {
+		f()
+	}
+}
+
+type Counter struct {
+	mu sync.Mutex
+	n  int
+}
+
+var a = 0
+
+func (c Counter) Inc() { c.mu.Lock(); a++; c.mu.Unlock() }
+func main18() {
+	c := Counter{}
+	n := 1000
+	wg := sync.WaitGroup{}
+	wg.Add(n)
+
+	for _ = range n {
+		go func() {
+			defer wg.Done()
+			c.Inc()
+		}()
+	}
+
+	wg.Wait()
+
+	fmt.Println(a)
+}
+
+type T struct{}
+
+func (*T) M() {}
+
+type I interface{ M() }
+
+var _ I = &T{}
