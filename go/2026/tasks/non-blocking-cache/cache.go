@@ -34,7 +34,6 @@ func (c *Cache) Get(address string) (string, error) {
 	// if cached in progress poll
 	// fetch if not cached
 	c.mu.Lock()
-	defer c.mu.Unlock()
 	r, ok := c.res[address]
 	// cached
 	if ok {
@@ -47,6 +46,7 @@ func (c *Cache) Get(address string) (string, error) {
 				case <-t.C:
 					polled := c.res[address]
 					if !polled.progressing {
+						c.mu.Unlock()
 						return polled.res, nil
 					}
 				}
@@ -54,9 +54,11 @@ func (c *Cache) Get(address string) (string, error) {
 		}
 
 		if !r.progressing && r.err != nil {
+			c.mu.Unlock()
 			return "", r.err
 		}
 
+		c.mu.Unlock()
 		return r.res, nil
 	}
 
@@ -64,8 +66,11 @@ func (c *Cache) Get(address string) (string, error) {
 		progressing: true,
 		res:         "",
 	}
+	c.mu.Unlock()
 
 	fetched, err := c.client.Get(address)
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	if err != nil {
 		c.res[address] = Result{
 			progressing: false,
