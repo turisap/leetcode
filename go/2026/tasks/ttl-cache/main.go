@@ -35,8 +35,8 @@ func NewTtlCache() *TtlCache {
 						return true
 					}
 
-					if time.Now().After(cached.ttl) && cached.ttl.IsZero() {
-						values.Delete(key)
+					if time.Now().After(cached.ttl) && !cached.ttl.IsZero() {
+						values.CompareAndDelete(key, cached)
 					}
 
 					return true
@@ -55,7 +55,13 @@ func NewTtlCache() *TtlCache {
 }
 
 func (c *TtlCache) Set(key string, value string, ttl time.Duration) {
-	c.values.Store(key, Value{value, time.Now().Add(ttl)})
+	var expires time.Time
+	if ttl == 0 {
+		expires = time.Date(9999, 12, 31, 23, 59, 59, 0, time.UTC)
+	} else {
+		expires = time.Now().Add(ttl)
+	}
+	c.values.Store(key, Value{value, expires})
 }
 
 func (c *TtlCache) Get(key string) (string, bool) {
@@ -66,6 +72,10 @@ func (c *TtlCache) Get(key string) (string, bool) {
 
 	cached, casted := val.(Value)
 	if !casted {
+		return "", false
+	}
+
+	if !cached.ttl.After(time.Now()) {
 		return "", false
 	}
 
