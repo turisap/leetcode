@@ -7,50 +7,95 @@ import (
 )
 
 type TtlCache struct {
-	values *sync.Map
-	ctx    context.Context
-	cancel context.CancelFunc
+	values   *sync.Map
+	ctx      context.Context
+	cancel   context.CancelFunc
+	heap     *TTLHeap
+	valueSet chan struct{}
 }
 
 type Value struct {
 	value string
+	key   string
 	ttl   time.Time
 }
 
 func NewTtlCache() *TtlCache {
 	ctx, cancel := context.WithCancel(context.Background())
 	values := &sync.Map{}
+	valueSet := make(chan struct{}, 1)
+	heap := NewTTLHeap()
 
 	go func() {
-		ticker := time.NewTicker(time.Second)
-		defer ticker.Stop()
-
 		for {
 			select {
-			case <-ticker.C:
-				values.Range(func(key, value interface{}) bool {
-
-					cached, casted := value.(Value)
-					if !casted {
-						return true
-					}
-
-					if time.Now().After(cached.ttl) && !cached.ttl.IsZero() {
-						values.CompareAndDelete(key, cached)
-					}
-
-					return true
-				})
 			case <-ctx.Done():
 				return
+			default:
+				v, ok := heap.Peek()
+				if !ok {
+					select {
+					case <-ctx.Done():
+						return
+					case <-valueSet:
+						continue
+					}
+				}
+
+				if v.ttl.After(time.Now()) {
+					t := time.NewTimer(v.ttl.Sub(time.Now()))
+
+					select {
+					case <-ctx.Done():
+						t.Stop()
+						return
+					case <-valueSet:
+						t.Stop()
+						continue
+					case <-t.C:
+						t.Stop()
+						continue
+					}
+				}
+
+				if v.ttl.Before(time.Now()) {
+					v, _ = heap.Pop()
+					values.CompareAndDelete(v.key, v)
+				}
+
 			}
 		}
+		// ticker := time.NewTicker(time.Second)
+		// defer ticker.Stop()
+		//
+		// for {
+		// 	select {
+		// 	case <-ticker.C:
+		// 		values.Range(func(key, value interface{}) bool {
+		//
+		// 			cached, casted := value.(Value)
+		// 			if !casted {
+		// 				return true
+		// 			}
+		//
+		// 			if time.Now().After(cached.ttl) && !cached.ttl.IsZero() {
+		// 				values.CompareAndDelete(key, cached)
+		// 			}
+		//
+		// 			return true
+		// 		})
+		// 	case <-ctx.Done():
+		// 		return
+		// 	}
+		// }
 	}()
 
 	return &TtlCache{
-		ctx:    ctx,
-		cancel: cancel,
-		values: values,
+		ctx:      ctx,
+		cancel:   cancel,
+		values:   values,
+		heap:     heap,
+		valueSet: valueSet,
 	}
 }
 
@@ -61,7 +106,19 @@ func (c *TtlCache) Set(key string, value string, ttl time.Duration) {
 	} else {
 		expires = time.Now().Add(ttl)
 	}
-	c.values.Store(key, Value{value, expires})
+	v := Value{value: value, ttl: expires, key: key}
+
+	c.values.Store(key, v)
+
+	if ttl != 0 {
+		c.heap.Push(v)
+		select {
+		case c.valueSet <- struct{}{}:
+			return
+		default:
+			return
+		}
+	}
 }
 
 func (c *TtlCache) Get(key string) (string, bool) {
