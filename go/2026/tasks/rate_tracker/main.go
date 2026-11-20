@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -11,31 +11,48 @@ type Monitor interface {
 }
 
 type Handler struct {
-	counter int
-	mu      sync.Mutex
+	counter atomic.Int64
 }
 
 func (h *Handler) Handle() {
 	// Some work
 	// Calculate rate of this function
-	h.mu.Lock()
-	defer h.mu.Unlock()
-	h.counter++
+	h.counter.Add(1)
 }
 
 func (h *Handler) LogRate(ctx context.Context, monitor Monitor, d time.Duration) {
 	ticker := time.NewTicker(d)
 	defer ticker.Stop()
 
+	ratesCh := make(chan int, 10)
+
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				rate, ok := <-ratesCh
+				if !ok {
+					return
+				}
+
+				monitor.SendRate(rate)
+			}
+		}
+	}()
+
+	defer close(ratesCh)
 	for {
 		select {
 		case <-ticker.C:
-			h.mu.Lock()
-			val := h.counter
-			h.counter = 0
-			h.mu.Unlock()
-
-			monitor.SendRate(val)
+			rate := h.counter.Swap(0)
+			select {
+			case <-ctx.Done():
+				return
+			case ratesCh <- int(rate):
+				continue
+			}
 		case <-ctx.Done():
 			return
 		}
